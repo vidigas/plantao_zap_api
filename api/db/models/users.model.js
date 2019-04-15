@@ -3,9 +3,9 @@ import * as controllers from "../../controllers/users.controller";
 
 
 const usersModel = new Schema({
-	first_name: String,
-	last_name:  String,
-	personal_phone: {type: String, required: true}
+	hasCredit: {type: Boolean, default: false},
+	phone: {type: String, required: true},
+	role: {type: String, required: true}
 });
 
 usersModel.statics = controllers;

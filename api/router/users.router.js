@@ -11,11 +11,11 @@ const usersRouter = () => {
 
 	router.post('/', handle(Users.create));
 
-	router.get('/:id', handle(Users.getOne));
+	router.get('/:phone', handle(Users.getOne));
 
-	router.put('/:id', handle(Users.update));
+	router.put('/:phone', handle(Users.update));
 
-	router.delete('/:id', handle(Users.deleteUser));
+	router.delete('/:phone', handle(Users.deleteUser));
 
 	return router;
 }

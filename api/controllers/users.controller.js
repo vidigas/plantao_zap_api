@@ -19,9 +19,9 @@ export const getOne = async (params) => {
 	const Users = mongoose.model('users');
 
 	try {
-		let data = await Users.find({ _id:params.id });
+		let data = await Users.findOne({ phone:params.phone });
 		
-		if(!data.length) return { status: 200, data: "User not found"};
+		if(!data) return { status: 200, data: { notRegistered: true }};
 		
 		return { status: 200, data};
 	} catch(e) {
@@ -31,12 +31,9 @@ export const getOne = async (params) => {
 
 export const create = async (body) => {
 	const Users = mongoose.model('users');
-
 	const newUser = new Users({
-		email: body.email,
-		first_name: body.first_name,
-		last_name: body.last_name,
-		personal_phone: body.personal_phone
+		phone: body.phone,
+		role: body.role
 	});
 
 	try {
@@ -51,7 +48,6 @@ export const update = async(params, body) => {
 	const Users = mongoose.model('users');
 
 	const updatedUser = {
-		email: body.email,
 		first_name: body.first_name,
 		last_name: body.last_name,
 		personal_phone: body.personal_phone
@@ -70,7 +66,7 @@ export const deleteUser = async(params, body) => {
 	const Users = mongoose.model('users');
 
 	try {
-		let data = await Users.findOneAndDelete({ _id: params.id });
+		let data = await Users.findOneAndDelete({ phone: params.phone });
 		if(!data) return { status: 200, data: 'User not found'};
 		return { status: 200, data: `User with id ${params.id},successfully deleted.`}
 	} catch(e) {
