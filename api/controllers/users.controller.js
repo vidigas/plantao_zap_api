@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { allStates } from '../db/models/user.states.model';
 
 
 export const getAll = async () => {
@@ -21,7 +22,7 @@ export const getOne = async (params) => {
 	try {
 		let data = await Users.findOne({ phone:params.phone });
 		
-		if(!data) return { status: 200, data: { notRegistered: true }};
+		if(!data) return { status: 200, data: { state: allStates[0] }};
 		
 		return { status: 200, data};
 	} catch(e) {
@@ -33,7 +34,8 @@ export const create = async (body) => {
 	const Users = mongoose.model('users');
 	const newUser = new Users({
 		phone: body.phone,
-		role: body.role
+		role: body.role,
+		state: allStates[1]
 	});
 
 	try {

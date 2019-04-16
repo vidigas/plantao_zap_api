@@ -15,6 +15,8 @@ export default () => {
 
 	app.use('/users', usersRouter());
 
+	// app.use('/messages', messageRouter());
+
 
 
 	return app;
