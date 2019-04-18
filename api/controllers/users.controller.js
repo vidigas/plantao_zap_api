@@ -21,9 +21,15 @@ export const getOne = async (params) => {
 
 	try {
 		let data = await Users.findOne({ phone:params.phone });
-		
-		if(!data) return { status: 200, data: { state: allStates[0] }};
-		
+		console.log('get user : ',data);
+		if(!data) {
+				//fiz um negocio que causa -> você vai ficar puto, rs... 
+				// quando puxa um usuario que não existe, ele cadastra esse usuário como status nãoregistrado
+				// fiz para poder anexar o a mensagem inicial desse cara nele antes de entrar no router.
+				const nonRegUser = { phone:params.phone, role:'undetermined', state: allStates[0] };
+				create(nonRegUser);
+			return { status: 200, data: { phone:params.phone, role:'undetermined', state: allStates[0] }};
+		}
 		return { status: 200, data};
 	} catch(e) {
 		return { status:500, data: e};
@@ -35,11 +41,12 @@ export const create = async (body) => {
 	const newUser = new Users({
 		phone: body.phone,
 		role: body.role,
-		state: allStates[1]
+		state: body.state
 	});
-
+	console.log('new user create',newUser);
 	try {
 		let data = await newUser.save();
+		console.log('confirm',data);
 		return { status: 200, data};
 	} catch(e) {
 		return { status:500, data: e};
@@ -48,15 +55,12 @@ export const create = async (body) => {
 
 export const update = async(params, body) => {
 	const Users = mongoose.model('users');
-
-	const updatedUser = {
-		first_name: body.first_name,
-		last_name: body.last_name,
-		personal_phone: body.personal_phone
-	}
-
+	// coloquei body=body para dar update só o que for relevante. depois tem que checar se tudo certo aqui.
+	const updatedUser = body
+	console.log('update user', body);
 	try {
-		let data = await Users.findOneAndUpdate({ _id: params.id }, updatedUser ,{ new: true });
+		//atualizei o id de busca
+		let data = await Users.findOneAndUpdate({ phone:params.phone }, updatedUser ,{ new: true });
 		return { status: 200, data};
 	} catch(e) {
 		return { status:500, data:e};

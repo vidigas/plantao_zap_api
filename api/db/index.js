@@ -1,15 +1,17 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"; //imports a module that connects with mongdb
 
-import { MONGO_URL } from "../../env.config";
+import { MONGO_URL } from "../../env.config"; //imports env variables
 
-import usersModel from "./models/users.model";
+import usersModel from "./models/users.model"; //im
+import messagesModel from "./models/messages.model"; //im
+
 
 const mongodb = async () => {
 	mongoose.model('users', usersModel);
+	mongoose.model('messages', messagesModel);
+	mongoose.set('useFindAndModify', false); //não entendi isso
 
-	mongoose.set('useFindAndModify', false);
-
-	await mongoose.connect(MONGO_URL, { useNewUrlParser: true});
+	await mongoose.connect(MONGO_URL, { useNewUrlParser: true}); //não entendi isso
 }
 
 export default mongodb;
