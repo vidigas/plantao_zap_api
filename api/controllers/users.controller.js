@@ -38,6 +38,7 @@ export const getOne = async (params) => {
 
 export const create = async (body) => {
 	const Users = mongoose.model('users');
+	// known issue limitar criação de usuário novo
 	const newUser = new Users({
 		phone: body.phone,
 		role: body.role,
